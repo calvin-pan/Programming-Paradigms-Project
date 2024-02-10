@@ -19,11 +19,86 @@ public class ColorHistogram {
   * @param filename name of the text file where histogram data is stored
   */
   public ColorHistogram (String filename) {
-    this.image = new ColorImage(filename);
-    this.depth = this.image.getDepth();
-    // this.histogram = new int[(int)Math.pow(BASE,(this.depth*COLOR_CHANNELS))];
+    // this.image = new ColorImage(filename);
+    // this.depth = this.image.getDepth();
+    // // this.histogram = new int[(int)Math.pow(BASE,(this.depth*COLOR_CHANNELS))];
+    //
+    // initializeHistogram();
 
-    initializeHistogram();
+    // Scanner sc;
+    try {
+      Scanner sc = new Scanner(new File(filename));
+      // sc.useDelimiter(" |\\n");
+
+      if (sc.hasNextInt()) {
+        int numberOfColors = sc.nextInt();
+        System.out.println("ColorHistogram :: first number read from the file is: " + numberOfColors);
+
+        if (numberOfColors <= 0) {
+          System.out.println("ColorHistogram :: numberOfColors is WRONG!");
+          return;
+        }
+
+        double d = Math.log(numberOfColors)/NATURAL_LOG_2;
+        System.out.println("ColorHistogram :: Value of d: " + d);
+
+        this.depth = (int)d;
+      }
+
+      if (this.depth <= 0) {
+        System.out.println("ColorHistogram :: Depth is WRONG! Value is: " + this.depth);
+        return;
+      }
+
+      initializeHistogram();
+
+      int index = 0;
+      int numberOfPixels = 0;
+      while (sc.hasNextInt()) {
+        this.histogram[index] = sc.nextInt();
+        numberOfPixels+= this.histogram[index];
+        System.out.print(Integer.toString(this.histogram[index]) + " ");
+        index++;
+      }
+      System.out.println("\nColorHistogram :: Number of Pixels: " + numberOfPixels);
+
+      normalizeHistogram(numberOfPixels);
+    }
+    catch(Exception e) {
+      System.out.println("ColorHistogram :: Scanner threw an exception!!");
+      System.out.println(e.getMessage());
+    }
+    // Scanner sc = new Scanner(new File(filename));
+    // sc.useDelimiter(" |\\n");
+    //
+    // if (sc.hasNextInt()) {
+    //   int numberOfColors = sc.nextInt();
+    //   System.out.println("ColorHistogram :: first number read from the file is: " + numberOfColors);
+    //
+    //   if (numberOfColors <= 0) {
+    //     System.out.println("ColorHistogram :: numberOfColors is WRONG!");
+    //     return;
+    //   }
+    //
+    //   this.depth = (int)(Math.log(numberOfColors)/NATURAL_LOG_2);
+    // }
+    //
+    // if (this.depth <= 0) {
+    //   System.out.println("ColorHistogram :: Depth is WRONG! Value is: " + this.depth);
+    //   return;
+    // }
+    //
+    // initializeHistogram();
+    //
+    // int index = 0;
+    // int numberOfPixels = 0;
+    // while (sc.hasNextInt()) {
+    //   this.histogram[index] = sc.nextInt();
+    //   numberOfPixels+= this.histogram[index];
+    //   index++;
+    // }
+    //
+    // normalizeHistogram(numberOfPixels);
   }
 
   /**
@@ -62,9 +137,34 @@ public class ColorHistogram {
 
   }
 
-  private void createHistogram() {
-    int width = this.image.getWidth();
-    int height = this.image.getHeight();
+  private void normalizeHistogramFromImage() {
+    normalizeHistogram(this.image.getWidth() * this.image.getHeight());
+  }
+
+  private void normalizeHistogram(int numberOfPixels) {
+    // int numberOfPixels = this.image.getHeight() * this.image.getWidth();
+    // int numberOfPixels = height * width;
+
+    if (numberOfPixels <= 0) {
+      System.out.println("normalizeHistogram :: Number of pixels is " + numberOfPixels
+                        + ". INVALID VALUE!");
+      return;
+    }
+
+    for (int index = 0; index < this.normalizedHistogram.length; index++) {
+      this.normalizedHistogram[index] = this.histogram[index]/numberOfPixels;
+    }
+  }
+
+  private void createHistogramFromImage() {
+    // int width = this.image.getWidth();
+    // int height = this.image.getHeight();
+    createHistogram(this.image.getWidth(), this.image.getHeight());
+  }
+
+  private void createHistogram(int width, int height) {
+    // int width = this.image.getWidth();
+    // int height = this.image.getHeight();
     int pixelColor[] = new int[3];
     for (int row = 0; row < width; row++) {
       for (int column = 0; column < height; column++) {
@@ -91,9 +191,11 @@ public class ColorHistogram {
     }
 
     this.histogram = new int[(int)Math.pow(BASE,(this.depth*COLOR_CHANNELS))];
+    this.normalizedHistogram = new double[(int)Math.pow(BASE,(this.depth*COLOR_CHANNELS))];
 
     for (int i = 0; i < this.histogram.length; i++) {
       this.histogram[i] = 0;
+      this.normalizedHistogram[i] = 0.0;
     }
   }
 
@@ -104,5 +206,17 @@ public class ColorHistogram {
 
   private final int COLOR_CHANNELS = 3;
   private final int BASE = 2;
+  private final double NATURAL_LOG_2 = Math.log(2);
+
+  // Test method
+	public static void main(String args[]){
+		// ColorImage colorImage = new ColorImage("queryImages\\q00.ppm");
+		// System.out.println(Arrays.toString(colorImage.getPixel(0,1)));
+    //
+		// colorImage.reduceColor(3);
+
+    ColorHistogram hist = new ColorHistogram("25.jpg.txt");
+
+	}
 
 }
