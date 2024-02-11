@@ -93,15 +93,6 @@ public class ColorImage {
 			depth = d;
 		}
 
-		/*
-		int counter = 0;
-		for (int i = 0; i < image.length; i++) {
-			for (int j = 0; j < image[i].length; j++) {
-				System.out.println(Arrays.toString(image[i][j]));
-				counter++;
-			}
-		}*/
-
 	}
 
 	public int getWidth() {
