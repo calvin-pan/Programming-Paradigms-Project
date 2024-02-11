@@ -61,6 +61,7 @@ public class ColorHistogram {
         System.out.print(this.histogram[index] + " ");
         index++;
       }
+      sc.close();
       System.out.println("\nColorHistogram :: Number of Pixels: " + numberOfPixels);
 
       normalizeHistogram(numberOfPixels);
@@ -129,7 +130,18 @@ public class ColorHistogram {
   * @param hist the histogram to compare the present histogram instance with
   */
   public double compare (ColorHistogram hist) {
-    return 0.0;
+    if (this.normalizedHistogram.length != hist.getHistogram().length) {
+      System.out.println("compare :: Histogram lengths mismatch! ERROR!");
+      return 0.0;
+    }
+
+    double intersection = 0.0;
+    double otherHistogram[] = hist.getHistogram();
+    for (int index = 0; index < this.normalizedHistogram.length; index++) {
+      intersection += Math.min(this.normalizedHistogram[index], otherHistogram[index]);
+    }
+    System.out.println("\nIntersection: " + intersection);
+    return intersection;
   }
 
   /**
@@ -137,7 +149,7 @@ public class ColorHistogram {
   * @param filename name of the file to store histogram data
   */
   public void save (String filename) {
-
+    
   }
 
   private void normalizeHistogramFromImage() {
@@ -209,7 +221,7 @@ public class ColorHistogram {
       sum += this.normalizedHistogram[index];
       System.out.print(this.normalizedHistogram[index] + " ");
     }
-    System.out.println("\nComputed Sum: " + sum);
+    System.out.println("\nComputed Sum: " + (float)sum);
 
     // System.out.println("Normalized Histogram length: " + this.normalizedHistogram.length);
   }
