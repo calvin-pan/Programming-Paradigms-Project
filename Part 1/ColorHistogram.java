@@ -66,7 +66,7 @@ public class ColorHistogram {
 
       normalizeHistogram(numberOfPixels);
 
-      printAndVerifyNormalizedHistogram();
+      // printAndVerifyNormalizedHistogram();
     }
     catch(Exception e) {
       System.out.println("ColorHistogram :: Scanner threw an exception!!");
@@ -149,7 +149,33 @@ public class ColorHistogram {
   * @param filename name of the file to store histogram data
   */
   public void save (String filename) {
-    
+    if (filename.length() == 0) {
+      System.out.println("save :: filename has ZERO length!");
+      return;
+    }
+
+    try {
+      PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
+
+      writer.println(this.histogram.length);
+      for (int index = 0; index < this.histogram.length; index++) {
+        writer.print(this.histogram[index] + " ");
+      }
+      writer.flush();
+      writer.close();
+    }
+    catch(Exception e) {
+      System.out.println("save :: Could not create " + filename);
+      System.out.println(e.getMessage());
+    }
+    // PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(filename)));
+
+    // writer.println(this.histogram.length);
+    // for (int index = 0; index < this.histogram.length; index++) {
+    //   writer.print(this.histogram[index] + " ");
+    // }
+    // writer.flush();
+    // writer.close();
   }
 
   private void normalizeHistogramFromImage() {
@@ -243,6 +269,7 @@ public class ColorHistogram {
 		// colorImage.reduceColor(3);
 
     ColorHistogram hist = new ColorHistogram("25.jpg.txt");
+    hist.save("25-generated.txt");
 
 	}
 
