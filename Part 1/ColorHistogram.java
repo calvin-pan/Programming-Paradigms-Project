@@ -66,7 +66,7 @@ public class ColorHistogram {
 
       normalizeHistogram(numberOfPixels);
 
-      printAndVerifyNormalizedHistogram();
+      // printAndVerifyNormalizedHistogram();
     }
     catch(Exception e) {
       System.out.println("ColorHistogram :: Scanner threw an exception!!");
@@ -301,19 +301,19 @@ public class ColorHistogram {
     //
 		// colorImage.reduceColor(3);
 
-    ColorImage image = new ColorImage("25.ppm");
-    image.reduceColor(3);
-    System.out.println("image depth: " + image.getDepth());
-    ColorHistogram hist = new ColorHistogram(image.getDepth());
-    hist.setImage(image);
-    hist.computeHistogram();
-    hist.printHistograms();
+    // ColorImage image = new ColorImage("25.ppm");
+    // image.reduceColor(3);
+    // System.out.println("image depth: " + image.getDepth());
+    // ColorHistogram hist = new ColorHistogram(image.getDepth());
+    // hist.setImage(image);
+    // hist.computeHistogram();
+    // hist.printHistograms();
+    //
+    // ColorHistogram hist2 = new ColorHistogram("25.jpg.txt");
+    // System.out.println("Comparing 25.ppm with 25.jpg.txt.\nValue of intersection: " + (float)hist.compare(hist2));
 
-    ColorHistogram hist2 = new ColorHistogram("25.jpg.txt");
-    System.out.println("Comparing 25.ppm with 25.jpg.txt.\nValue of intersection: " + (float)hist.compare(hist2));
-
-    // ColorHistogram hist = new ColorHistogram("25.jpg.txt");
-    // hist.save("25-generated.txt");
+    ColorHistogram hist = new ColorHistogram("1892.jpg.txt");
+    hist.save("1892-generated.txt");
 
 	}
 
