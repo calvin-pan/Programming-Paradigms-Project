@@ -42,7 +42,7 @@ public class ColorHistogram {
         double d = Math.log(numberOfColors)/NATURAL_LOG_2;
         System.out.println("ColorHistogram :: Value of d: " + d);
 
-        this.depth = (int)d;
+        this.depth = (int)(d/COLOR_CHANNELS);
       }
 
       if (this.depth <= 0) {
@@ -57,12 +57,15 @@ public class ColorHistogram {
       while (sc.hasNextInt()) {
         this.histogram[index] = sc.nextInt();
         numberOfPixels+= this.histogram[index];
-        System.out.print(Integer.toString(this.histogram[index]) + " ");
+        // System.out.print(Integer.toString(this.histogram[index]) + " ");
+        System.out.print(this.histogram[index] + " ");
         index++;
       }
       System.out.println("\nColorHistogram :: Number of Pixels: " + numberOfPixels);
 
       normalizeHistogram(numberOfPixels);
+
+      printAndVerifyNormalizedHistogram();
     }
     catch(Exception e) {
       System.out.println("ColorHistogram :: Scanner threw an exception!!");
@@ -152,7 +155,7 @@ public class ColorHistogram {
     }
 
     for (int index = 0; index < this.normalizedHistogram.length; index++) {
-      this.normalizedHistogram[index] = this.histogram[index]/numberOfPixels;
+      this.normalizedHistogram[index] = (double)this.histogram[index]/(double)numberOfPixels;
     }
   }
 
@@ -197,6 +200,18 @@ public class ColorHistogram {
       this.histogram[i] = 0;
       this.normalizedHistogram[i] = 0.0;
     }
+  }
+
+  private void printAndVerifyNormalizedHistogram() {
+    System.out.println();
+    double sum = 0.0;
+    for (int index = 0; index < this.normalizedHistogram.length; index++) {
+      sum += this.normalizedHistogram[index];
+      System.out.print(this.normalizedHistogram[index] + " ");
+    }
+    System.out.println("\nComputed Sum: " + sum);
+
+    // System.out.println("Normalized Histogram length: " + this.normalizedHistogram.length);
   }
 
   private ColorImage image;
