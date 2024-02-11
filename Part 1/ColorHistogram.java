@@ -66,7 +66,7 @@ public class ColorHistogram {
 
       normalizeHistogram(numberOfPixels);
 
-      // printAndVerifyNormalizedHistogram();
+      printAndVerifyNormalizedHistogram();
     }
     catch(Exception e) {
       System.out.println("ColorHistogram :: Scanner threw an exception!!");
@@ -112,6 +112,12 @@ public class ColorHistogram {
   public void setImage (ColorImage image) {
     if (image != null) {
       this.image = image;
+
+      if (this.sum != 0.0) {
+        // matchesImage = false;
+        System.out.println("WARNING! setImage() called on an object that already has a histogram calculated!");
+        System.out.println("Please re-calculate image histogram if required!");
+      }
     }
     else {
       System.out.println("setImage :: ERROR! the ColorImage argument is NULL.");
@@ -178,6 +184,11 @@ public class ColorHistogram {
     // writer.close();
   }
 
+  public void computeHistogram() {
+    createHistogramFromImage();
+    normalizeHistogramFromImage();
+  }
+
   private void normalizeHistogramFromImage() {
     normalizeHistogram(this.image.getWidth() * this.image.getHeight());
   }
@@ -194,6 +205,7 @@ public class ColorHistogram {
 
     for (int index = 0; index < this.normalizedHistogram.length; index++) {
       this.normalizedHistogram[index] = (double)this.histogram[index]/(double)numberOfPixels;
+      this.sum += this.normalizedHistogram[index];
     }
   }
 
@@ -216,6 +228,8 @@ public class ColorHistogram {
         this.histogram[calculateIndex(pixelColor)]++;
       }
     }
+
+    // matchesImage = true;
   }
 
   private int calculateIndex(int[] pixelColor) {
@@ -252,10 +266,29 @@ public class ColorHistogram {
     // System.out.println("Normalized Histogram length: " + this.normalizedHistogram.length);
   }
 
+  private void printAndVerifyHistogram() {
+    System.out.println();
+    // double sum = 0.0;
+    for (int index = 0; index < this.histogram.length; index++) {
+      // sum += this.normalizedHistogram[index];
+      System.out.print(this.histogram[index] + " ");
+    }
+    // System.out.println("\nComputed Sum: " + (float)sum);
+
+    // System.out.println("Normalized Histogram length: " + this.normalizedHistogram.length);
+  }
+
+  public void printHistograms() {
+    printAndVerifyHistogram();
+    printAndVerifyNormalizedHistogram();
+  }
+
   private ColorImage image;
   private int depth = 0;
   private int histogram[];
   private double normalizedHistogram[];
+  private float sum = 0;
+  // private bool matchesImage = false;
 
   private final int COLOR_CHANNELS = 3;
   private final int BASE = 2;
@@ -268,8 +301,19 @@ public class ColorHistogram {
     //
 		// colorImage.reduceColor(3);
 
-    ColorHistogram hist = new ColorHistogram("25.jpg.txt");
-    hist.save("25-generated.txt");
+    ColorImage image = new ColorImage("25.ppm");
+    image.reduceColor(3);
+    System.out.println("image depth: " + image.getDepth());
+    ColorHistogram hist = new ColorHistogram(image.getDepth());
+    hist.setImage(image);
+    hist.computeHistogram();
+    hist.printHistograms();
+
+    ColorHistogram hist2 = new ColorHistogram("25.jpg.txt");
+    System.out.println("Comparing 25.ppm with 25.jpg.txt.\nValue of intersection: " + (float)hist.compare(hist2));
+
+    // ColorHistogram hist = new ColorHistogram("25.jpg.txt");
+    // hist.save("25-generated.txt");
 
 	}
 
