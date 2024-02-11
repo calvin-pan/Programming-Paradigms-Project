@@ -187,28 +187,6 @@ public class ColorHistogram {
     }
   }
 
-  private void printAndVerifyNormalizedHistogram() {
-    System.out.println();
-    double sum = 0.0;
-    for (int index = 0; index < this.normalizedHistogram.length; index++) {
-      sum += this.normalizedHistogram[index];
-      System.out.print(this.normalizedHistogram[index] + " ");
-    }
-    System.out.println("\nComputed Sum: " + (float)sum);
-  }
-
-  private void printAndVerifyHistogram() {
-    System.out.println();
-    for (int index = 0; index < this.histogram.length; index++) {
-      System.out.print(this.histogram[index] + " ");
-    }
-  }
-
-  public void printHistograms() {
-    printAndVerifyHistogram();
-    printAndVerifyNormalizedHistogram();
-  }
-
   private ColorImage image;
   private int depth = 0;
   private int histogram[];
