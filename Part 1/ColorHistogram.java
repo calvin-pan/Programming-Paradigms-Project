@@ -32,7 +32,7 @@ public class ColorHistogram {
 
       if (sc.hasNextInt()) {
         int numberOfColors = sc.nextInt();
-        System.out.println("ColorHistogram :: first number read from the file is: " + numberOfColors);
+        // System.out.println("ColorHistogram :: first number read from the file is: " + numberOfColors);
 
         if (numberOfColors <= 0) {
           System.out.println("ColorHistogram :: numberOfColors is WRONG!");
@@ -40,7 +40,7 @@ public class ColorHistogram {
         }
 
         double d = Math.log(numberOfColors)/NATURAL_LOG_2;
-        System.out.println("ColorHistogram :: Value of d: " + d);
+        // System.out.println("ColorHistogram :: Value of d: " + d);
 
         this.depth = (int)(d/COLOR_CHANNELS);
       }
@@ -58,11 +58,11 @@ public class ColorHistogram {
         this.histogram[index] = sc.nextInt();
         numberOfPixels+= this.histogram[index];
         // System.out.print(Integer.toString(this.histogram[index]) + " ");
-        System.out.print(this.histogram[index] + " ");
+        // System.out.print(this.histogram[index] + " ");
         index++;
       }
       sc.close();
-      System.out.println("\nColorHistogram :: Number of Pixels: " + numberOfPixels);
+      // System.out.println("\nColorHistogram :: Number of Pixels: " + numberOfPixels);
 
       normalizeHistogram(numberOfPixels);
 
@@ -146,7 +146,7 @@ public class ColorHistogram {
     for (int index = 0; index < this.normalizedHistogram.length; index++) {
       intersection += Math.min(this.normalizedHistogram[index], otherHistogram[index]);
     }
-    System.out.println("\nIntersection: " + intersection);
+    // System.out.println("\nIntersection: " + intersection);
     return intersection;
   }
 
@@ -295,26 +295,26 @@ public class ColorHistogram {
   private final double NATURAL_LOG_2 = Math.log(2);
 
   // Test method
-	public static void main(String args[]){
-		// ColorImage colorImage = new ColorImage("queryImages\\q00.ppm");
-		// System.out.println(Arrays.toString(colorImage.getPixel(0,1)));
-    //
-		// colorImage.reduceColor(3);
-
-    // ColorImage image = new ColorImage("25.ppm");
-    // image.reduceColor(3);
-    // System.out.println("image depth: " + image.getDepth());
-    // ColorHistogram hist = new ColorHistogram(image.getDepth());
-    // hist.setImage(image);
-    // hist.computeHistogram();
-    // hist.printHistograms();
-    //
-    // ColorHistogram hist2 = new ColorHistogram("25.jpg.txt");
-    // System.out.println("Comparing 25.ppm with 25.jpg.txt.\nValue of intersection: " + (float)hist.compare(hist2));
-
-    ColorHistogram hist = new ColorHistogram("1892.jpg.txt");
-    hist.save("1892-generated.txt");
-
-	}
+	// public static void main(String args[]){
+	// 	// ColorImage colorImage = new ColorImage("queryImages\\q00.ppm");
+	// 	// System.out.println(Arrays.toString(colorImage.getPixel(0,1)));
+  //   //
+	// 	// colorImage.reduceColor(3);
+  //
+  //   // ColorImage image = new ColorImage("25.ppm");
+  //   // image.reduceColor(3);
+  //   // System.out.println("image depth: " + image.getDepth());
+  //   // ColorHistogram hist = new ColorHistogram(image.getDepth());
+  //   // hist.setImage(image);
+  //   // hist.computeHistogram();
+  //   // hist.printHistograms();
+  //   //
+  //   // ColorHistogram hist2 = new ColorHistogram("25.jpg.txt");
+  //   // System.out.println("Comparing 25.ppm with 25.jpg.txt.\nValue of intersection: " + (float)hist.compare(hist2));
+  //
+  //   // ColorHistogram hist = new ColorHistogram("1892.jpg.txt");
+  //   // hist.save("1892-generated.txt");
+  //
+	// }
 
 }

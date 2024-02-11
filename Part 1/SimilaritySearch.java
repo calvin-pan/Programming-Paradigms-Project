@@ -16,7 +16,6 @@ public class SimilaritySearch {
   }
 
   public ColorHistogram computeHistogram(ColorImage image) {
-    // System.out.println("image depth: " + image.getDepth());
     image.reduceColor(COLOR_DEPTH);
     ColorHistogram histogram = new ColorHistogram(image.getDepth());
     histogram.setImage(image);
@@ -34,7 +33,8 @@ public class SimilaritySearch {
 
     for(File file: this.histogramFiles) {
       String fileNameString = file.getName();
-      ColorHistogram histogram = new ColorHistogram(fileNameString);
+      String fileNamePathString = this.datasetDirectory + "/" + fileNameString;
+      ColorHistogram histogram = new ColorHistogram(fileNamePathString);
 
       double intersection = this.queryHistogram.compare(histogram);
 
@@ -43,21 +43,16 @@ public class SimilaritySearch {
   }
 
   public void getListOfHistogramFiles(String directoryName) {
-    // File[] histogramFiles = null;
 
     try {
       File directory = new File(directoryName);
       FileFilter filter = new TxtFilter();
 
       this.histogramFiles = directory.listFiles(filter);
-
-      // return histogramFiles;
     }
     catch(Exception e) {
       System.out.println(e.getMessage());
     }
-
-    // return histogramFiles;
   }
 
   class TxtFilter implements FileFilter {
@@ -67,19 +62,24 @@ public class SimilaritySearch {
     }
   }
 
-  // class JpgFilter implements FileFilter {
-  //   @Override
-  //   public boolean accept(File file) {
-  //     boolean filterResult = (file.getName().endsWith(".jpg"))||(file.getName().endsWith(".jpeg"));
-  //     return filterResult;
-  //   }
-  // }
-
   public TreeMap<Double, String> getIntersectionMap() {
     return this.intersectionMap;
   }
 
+  public void printSearchResults() {
 
+    double firstIntersection = intersectionMap.lastKey();
+    String firstFileName = intersectionMap.get(firstIntersection);
+    System.out.println(firstFileName.substring(0, firstFileName.length()-4));
+
+    double previousKey = firstIntersection;
+    for(int index = 2; index < 6; index++) {
+      double key = intersectionMap.lowerKey(previousKey);
+      previousKey = key;
+      String fileNameString = intersectionMap.get(key);
+      System.out.println(fileNameString.substring(0, fileNameString.length()-4));
+    }
+  }
 
   private final int COLOR_DEPTH = 3;
   private ColorHistogram queryHistogram;
@@ -88,36 +88,17 @@ public class SimilaritySearch {
   private TreeMap<Double, String> intersectionMap;
 
   public static void main(String args[]) {
-    // System.out.println("First argument: " + args[0] + "\nSecond argument: " + args[1]);
 
     if (args.length != 2) {
       System.out.println("ERROR! Please specify the correct number of arguments!");
       return;
     }
 
-    String queryImageName = args[0];
-    String datasetDirectory = args[1];
+    SimilaritySearch similaritySearch = new SimilaritySearch(args[0], args[1]);
 
-    // ColorImage queryImage = new ColorImage(queryImageName);
+    similaritySearch.populateIntersectionMap();
 
-    SimilaritySearch obj = new SimilaritySearch(queryImageName, datasetDirectory);
-
-    // obj.computeHistogram(queryImage);
-
-    obj.populateIntersectionMap();
-
-    TreeMap<Double, String> intersectionMap = obj.getIntersectionMap();
-
-    double firstIntersection = intersectionMap.firstKey();
-    System.out.println("Key 1: " + firstIntersection + " Value: " + intersectionMap.get(firstIntersection));
-
-    double previousKey = firstIntersection;
-    for(int index = 2; index < 6; index++) {
-      double key = intersectionMap.higherKey(previousKey);
-      previousKey = key;
-
-      System.out.println("Key " + index + ": " + key + " Value: " + intersectionMap.get(key));
-    }
+    similaritySearch.printSearchResults();
 
   }
 }

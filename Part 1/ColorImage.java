@@ -64,7 +64,7 @@ public class ColorImage {
 
 			// Test loop
 			for(int[] i : pixels) {
-				System.out.println(Arrays.toString(i));
+				// System.out.println(Arrays.toString(i));
 				counter = counter + 1;
 
 				if(counter == 10) {
