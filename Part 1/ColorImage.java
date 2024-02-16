@@ -59,19 +59,7 @@ public class ColorImage {
 					}
 				}
 			}
-
-			int counter = 0;
-
-			// Test loop
-			for(int[] i : pixels) {
-				// System.out.println(Arrays.toString(i));
-				counter = counter + 1;
-
-				if(counter == 10) {
-					break;
-				}
-
-			}
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
