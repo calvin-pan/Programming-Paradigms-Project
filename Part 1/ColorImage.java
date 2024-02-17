@@ -5,8 +5,8 @@ public class ColorImage {
 	private int width;
 	private int height;
 	private int depth = 8;
-	ArrayList<int[]> pixels;
-	int[][][] image;
+	private ArrayList<int[]> pixels;
+	private int[][][] image;
 
 	public ColorImage(String filename) {
 		try {
