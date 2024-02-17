@@ -1,3 +1,10 @@
+//
+// CSI 2120 Project Deliverable #1 - Java
+// Student Name:     Adwitheya Benbi              Calvin Pan
+// Student ID:       300165778                    300184557
+// Class: ColorImage
+//
+
 import java.io.*;
 import java.util.*;
 
@@ -8,6 +15,10 @@ public class ColorImage {
 	private ArrayList<int[]> pixels;
 	private int[][][] image;
 
+	/**
+  * @brief Parameterized Constructor to make a ColorImage object from a filename
+  * @param filename file name string for the image
+  */
 	public ColorImage(String filename) {
 		try {
 			FileReader fr = new FileReader(filename);
@@ -65,11 +76,21 @@ public class ColorImage {
 		}
 	}
 
+	/**
+  * @brief Returns the color values of a pixel in am image
+  * @param i row number of pixel
+	* @param j column number of pixel
+	* @return int[] array of RBG values for pixel color
+  */
 	public int[] getPixel(int i, int j) {
 
 		return image[i][j];
 	}
 
+	/**
+  * @brief Reduce image color space by d bits
+  * @param d bits to reduce the color space
+  */
 	public void reduceColor(int d){
 		for(int i = 0; i < image.length; i++) {
 			for(int j = 0; j < image[i].length; j++) {
@@ -83,14 +104,28 @@ public class ColorImage {
 
 	}
 
+  // Getters
+
+	/**
+	* @brief Return the width of image
+	* @return width of the image in pixels
+	*/
 	public int getWidth() {
 		return width;
 	}
 
+	/**
+	* @brief Return the height of image
+	* @return height of the image in pixels
+	*/
 	public int getHeight() {
 		return height;
 	}
 
+	/**
+	* @brief Return the depth of image
+	* @return depth of the image in bits
+	*/
 	public int getDepth() {
 		return depth;
 	}

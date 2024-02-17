@@ -1,3 +1,10 @@
+//
+// CSI 2120 Project Deliverable #1 - Java
+// Student Name:     Adwitheya Benbi              Calvin Pan
+// Student ID:       300165778                    300184557
+// Class: ColorHistogram
+//
+
 import java.io.*;
 import java.util.*;
 import java.lang.Math;
@@ -126,15 +133,26 @@ public class ColorHistogram {
     }
   }
 
+  /**
+  * @brief Computes histogram and normalized histogram for an image
+  */
   public void computeHistogram() {
     createHistogramFromImage();
     normalizeHistogramFromImage();
   }
 
+  /**
+  * @brief Creates a normalized histogram from member 'image'
+  */
   private void normalizeHistogramFromImage() {
     normalizeHistogram(this.image.getWidth() * this.image.getHeight());
   }
 
+  /**
+  * @brief Creates a normalized histogram from an ordinary histogram and number
+  *        of pixels
+  * @param numberOfPixels total number of pixels in the image
+  */
   private void normalizeHistogram(int numberOfPixels) {
     if (numberOfPixels <= 0) {
       System.out.println("normalizeHistogram :: Number of pixels is " + numberOfPixels
@@ -148,10 +166,18 @@ public class ColorHistogram {
     }
   }
 
+  /**
+  * @brief Creates histogram for the 'image' member
+  */
   private void createHistogramFromImage() {
     createHistogram(this.image.getWidth(), this.image.getHeight());
   }
 
+  /**
+  * @brief Creates histogram for an image using its height and width
+  * @param width width of image in number of numberOfPixels
+  * @param height height of image in number of pixels
+  */
   private void createHistogram(int width, int height) {
     int pixelColor[] = new int[3];
     for (int row = 0; row < width; row++) {
@@ -165,12 +191,20 @@ public class ColorHistogram {
     }
   }
 
+  /**
+  * @brief Calculates the index of a color in histogram
+  * @param pixelColor int[3] with RGB pixel colors
+  * @returns index the index of color in histogram
+  */
   private int calculateIndex(int[] pixelColor) {
     int index = 0;
     index = ((pixelColor[0] << (BASE*this.depth)) + (pixelColor[1] << this.depth) + pixelColor[2]);
     return index;
   }
 
+  /**
+  * @brief Initializes 'histogram' and 'normalizeHistogram' members with zeroes
+  */
   private void initializeHistogram() {
 
     if (this.depth <= 0) {
@@ -187,12 +221,14 @@ public class ColorHistogram {
     }
   }
 
+  // Private class members
   private ColorImage image;
   private int depth = 0;
   private int histogram[];
   private double normalizedHistogram[];
   private float sum = 0;
 
+  // Constants
   private final int COLOR_CHANNELS = 3;
   private final int BASE = 2;
   private final double NATURAL_LOG_2 = Math.log(2);

@@ -1,8 +1,22 @@
+//
+// CSI 2120 Project Deliverable #1 - Java
+// Student Name:     Adwitheya Benbi              Calvin Pan
+// Student ID:       300165778                    300184557
+// Class: SimilaritySearch
+//
+
 import java.io.*;
 import java.util.*;
 
 public class SimilaritySearch {
 
+  /**
+  * @brief Parameterized Constructor to make a SimilaritySearch object for the
+  *        query image, and dataset directory
+  * @param queryImageName string for name of image to query
+  * @param datasetDirectory string for the name of directory with the dataset of
+  *        images to search
+  */
   public SimilaritySearch(String queryImageName, String datasetDirectory) {
 
     this.datasetDirectory = datasetDirectory;
@@ -14,6 +28,11 @@ public class SimilaritySearch {
     this.intersectionMap = new TreeMap<Double, String>();
   }
 
+  /**
+  * @brief Compute histogram of provided query image
+  * @param image ColorImage object to calculate histogram for
+  * @returns ColorHistogram object with the histogram data of image
+  */
   public ColorHistogram computeHistogram(ColorImage image) {
     image.reduceColor(COLOR_DEPTH);
     ColorHistogram histogram = new ColorHistogram(image.getDepth());
@@ -23,6 +42,10 @@ public class SimilaritySearch {
     return histogram;
   }
 
+  /**
+  * @brief Populate 'intersectionMap' member with values of intersection of
+  *        images from dataset
+  */
   public void populateIntersectionMap() {
     getListOfHistogramFiles(this.datasetDirectory);
     if (histogramFiles.length == 0) {
@@ -41,6 +64,11 @@ public class SimilaritySearch {
     }
   }
 
+  /**
+  * @brief Initialize 'histogramFiles' with a list of filenames that contain
+  *        pre-computed histograms
+  * @param directoryName string name of the directory containing histogram files
+  */
   public void getListOfHistogramFiles(String directoryName) {
 
     try {
@@ -61,10 +89,16 @@ public class SimilaritySearch {
     }
   }
 
+  /**
+  * @brief Getter method for 'intersectionMap'
+  */
   public TreeMap<Double, String> getIntersectionMap() {
     return this.intersectionMap;
   }
 
+  /**
+  * @brief Print results of image search to the console
+  */
   public void printSearchResults() {
 
     double firstIntersection = intersectionMap.lastKey();
@@ -80,7 +114,10 @@ public class SimilaritySearch {
     }
   }
 
+  // Constants
   private final int COLOR_DEPTH = 3;
+
+  // Private Class Members
   private ColorHistogram queryHistogram;
   private String datasetDirectory;
   private File[] histogramFiles = null;
